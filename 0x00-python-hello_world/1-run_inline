@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Check if PYCODE environment variable is set and not empty
+[ -z "$PYCODE" ] && { echo "Error: PYCODE environment variable is not set or empty."; exit 1; }
+
+# Run the Python code directly from the environment variable
+python3 -c "$PYCODE"
