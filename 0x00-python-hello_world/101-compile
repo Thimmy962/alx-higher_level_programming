@@ -1,0 +1,4 @@
+#!/bin/bash
+python3 -c "import os, compileall; compileall.compile_file(os.getenv('PYFILE'))"
+mv ./__pycache__/* ./"${PYFILE:0:-3}.pyc"
+rm ./__pycache* -r -f
