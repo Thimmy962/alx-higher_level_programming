@@ -8,6 +8,6 @@ for i in range(0, 10):
             continue
 
         if i == 8 and j == 9:
-            print(f"{i}{j}")
+            print("".join("{}{}").format(i, j))
         else:
-            print(f"{i}{j}, ", end='')
+            print("".join("{}{}, ").format(i, j), end='')
