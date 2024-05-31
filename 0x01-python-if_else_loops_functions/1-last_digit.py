@@ -1,6 +1,14 @@
 #!/usr/bin/python3
 import random
 number = random.randint(-10000, 10000)
+
+if number < 0:
+    print(f"Last digit of {number} is ", end='')
+    number = number * -1
+    number = number % 10
+    print(f"{number * -1} and less than 6 and not 0")
+
+
 print(f"Last digit of {number} is ", end="")
 
 number = number % 10
