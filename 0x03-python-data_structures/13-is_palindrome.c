@@ -1,78 +1,72 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "lists.h"
 
-listint_t *create_new_node(int n);
-listint_t *reverse(listint_t *head);
+listint_t *reverse_listint(listint_t **head);
+int is_palindrome(listint_t **head);
+
 /**
- * is_palindrome - checks if a linked list is a palindrome
- * @head: pointer to a pointer called head
- * Return: an int.
+ * reverse_listint - Reverses a singly-linked listint_t list.
+ * @head: A pointer to the starting node of the list to reverse.
+ *
+ * Return: A pointer to the head of the reversed list.
+ */
+listint_t *reverse_listint(listint_t **head)
+{
+	listint_t *node = *head, *next, *prev = NULL;
+
+	while (node)
+	{
+		next = node->next;
+		node->next = prev;
+		prev = node;
+		node = next;
+	}
+
+	*head = prev;
+	return (*head);
+}
+
+/**
+ * is_palindrome - Checks if a singly linked list is a palindrome.
+ * @head: A pointer to the head of the linked list.
+ *
+ * Return: If the linked list is not a palindrome - 0.
+ *         If the linked list is a palindrome - 1.
  */
 int is_palindrome(listint_t **head)
 {
-	if (*head == NULL)
+	listint_t *tmp, *rev, *mid;
+	size_t size = 0, i;
+
+	if (*head == NULL || (*head)->next == NULL)
 		return (1);
 
-	listint_t *ptr = *head;
-	listint_t *reversed = reverse(*head);
-	listint_t *ptr2 = reversed;
-
-	while (ptr != NULL && ptr2 != NULL)
+	tmp = *head;
+	while (tmp)
 	{
-		if (ptr->n != ptr2->n)
-		{
-			free_listint(reversed);
+		size++;
+		tmp = tmp->next;
+	}
+
+	tmp = *head;
+	for (i = 0; i < (size / 2) - 1; i++)
+		tmp = tmp->next;
+
+	if ((size % 2) == 0 && tmp->n != tmp->next->n)
+		return (0);
+
+	tmp = tmp->next->next;
+	rev = reverse_listint(&tmp);
+	mid = rev;
+
+	tmp = *head;
+	while (rev)
+	{
+		if (tmp->n != rev->n)
 			return (0);
-		}
-		ptr = ptr->next;
-		ptr2 = ptr2->next;
+		tmp = tmp->next;
+		rev = rev->next;
 	}
-	free_listint(reversed);
+	reverse_listint(&mid);
+
 	return (1);
-}
-
-/**
- * reverse - reverse a linked list
- * @head: pointer to the beginning of the head
- * Return: an int.
- */
-listint_t *reverse(listint_t *head)
-{
-	if (head == NULL)
-	{
-		return (NULL);
-	}
-
-	listint_t *reversed_head = NULL;
-	listint_t *current = head;
-
-	while (current != NULL)
-	{
-		listint_t *new_node;
-
-		new_node = create_new_node(current->n);
-		new_node->next = reversed_head;
-		reversed_head = new_node;
-		current = current->next;
-	}
-	return (reversed_head);
-}
-
-/**
- * create_new_node - creates a new node
- * @n: the data in the node
- * Return: an int.
- */
-listint_t *create_new_node(int n)
-{
-	listint_t *new_node = malloc(sizeof(listint_t));
-
-	if (!new_node)
-	{
-		return (NULL);
-	}
-	new_node->n = n;
-	new_node->next = NULL;
-	return (new_node);
 }
